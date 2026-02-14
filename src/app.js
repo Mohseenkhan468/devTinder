@@ -1,11 +1,26 @@
-const express=require('express');
+const express = require("express");
+const connectDB = require("./config/database");
+const app = express();
+const cookieParser = require("cookie-parser");
+const authRouter=require('./routes/auth');
+const profileRouter = require("./routes/profile");
+const requestRouter=require('./routes/request')
+const {userAuth}=require('./middleware/auth')
+app.use(express.json());
+app.use(cookieParser());
 
-const app=express()
 
-app.use('/test',(req,res)=>{
-    res.send("Hello from the server")
-})
+app.use('/auth',authRouter)
+app.use('/profile',userAuth,profileRouter)
+app.use('/request',userAuth,requestRouter)
 
-app.listen(4000,()=>{
-    console.log('Server is listening')
-})
+connectDB()
+  .then(() => {
+    console.log("Database connected successfully.");
+    app.listen(5000, () => {
+      console.log("Server is listening");
+    });
+  })
+  .catch((error) => {
+    console.log("Unable to connect database", error.message);
+  });
