@@ -38,20 +38,41 @@ const validateEditProfileData = (data) => {
 
   if (keys.length === 0) return false;
 
-  const isValid= keys.every((key) =>
-    allowedEditFields.includes(key)
-  );
-  if(!isValid){
-    throw new Error('Input not valid')
+  const isValid = keys.every((key) => allowedEditFields.includes(key));
+  if (!isValid) {
+    throw new Error("Input not valid");
   }
 };
 
-const validateEditPasswordData=(data)=>{
-  const{password}=data;
-  if(!password||!validator.isStrongPassword(password)){
-    throw new Error('Invalid password.')
+const validateEditPasswordData = (data) => {
+  const { password } = data;
+  if (!password || !validator.isStrongPassword(password)) {
+    throw new Error("Invalid password.");
   }
-  return {password};
-}
+  return { password };
+};
 
-module.exports = { validateSignUpData, validateLoginData,validateEditProfileData,validateEditPasswordData };
+const requestSendData = (data) => {
+  const { status, toUserId } = data;
+
+  if (
+    !status ||
+    !validator.isIn(status, ["ignored", "interested"])
+  ) {
+    throw new Error("Invalid status provided");
+  }
+
+  if (!toUserId || !validator.isMongoId(toUserId)) {
+    throw new Error("Invalid to user id provided.");
+  }
+
+  return { status, toUserId };
+};
+
+module.exports = {
+  validateSignUpData,
+  validateLoginData,
+  validateEditProfileData,
+  validateEditPasswordData,
+  requestSendData,
+};
