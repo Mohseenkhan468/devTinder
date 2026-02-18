@@ -6,6 +6,7 @@ const authRouter=require('./routes/auth');
 const profileRouter = require("./routes/profile");
 const requestRouter=require('./routes/request')
 const {userAuth}=require('./middleware/auth')
+const userRouter=require('./routes/user')
 app.use(express.json());
 app.use(cookieParser());
 
@@ -13,6 +14,7 @@ app.use(cookieParser());
 app.use('/auth',authRouter)
 app.use('/profile',userAuth,profileRouter)
 app.use('/request',userAuth,requestRouter)
+app.use('/user',userAuth,userRouter)
 
 connectDB()
   .then(() => {
