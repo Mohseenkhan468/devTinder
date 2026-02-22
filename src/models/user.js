@@ -41,7 +41,8 @@ const UserSchema = new mongoose.Schema(
     },
     photoUrl: {
       type: String,
-      default: "",
+      default:
+        "https://img.freepik.com/free-vector/user-circles-set_78370-4704.jpg?semt=ais_user_personalization&w=740&q=80",
     },
     about: {
       type: String,
@@ -54,7 +55,7 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-UserSchema.methods.getJWT =async function () {
+UserSchema.methods.getJWT = async function () {
   const payload = {
     _id: this._id,
     role: "user",

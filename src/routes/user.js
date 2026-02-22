@@ -29,7 +29,6 @@ userRouter.get("/connections", async (req, res) => {
       status: "accepted",
     }).populate(
       ["fromUserId", "toUserId"],
-      ["firstName", "lastName", "photoUrl"],
     );
     const result = data.map((item) => {
       const isSender = item.fromUserId._id.equals(user._id);
