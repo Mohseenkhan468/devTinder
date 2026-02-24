@@ -19,12 +19,12 @@ app.use('/auth',authRouter)
 app.use('/profile',userAuth,profileRouter)
 app.use('/request',userAuth,requestRouter)
 app.use('/user',userAuth,userRouter)
-
+const PORT=5000
 connectDB()
   .then(() => {
     console.log("Database connected successfully.");
-    app.listen(5000, () => {
-      console.log("Server is listening");
+    app.listen(PORT, () => {
+      console.log(`Server is listening at port ${PORT}`);
     });
   })
   .catch((error) => {
