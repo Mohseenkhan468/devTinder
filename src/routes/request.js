@@ -4,6 +4,7 @@ const UserModel = require("../models/user");
 const requestRouter = express.Router();
 const { requestSendData } = require("../utils/validation");
 const { default: mongoose } = require("mongoose");
+const { sendEmail } = require("../utils/sendEmail");
 
 requestRouter.post("/send/:status/:toUserId", async (req, res) => {
   try {
@@ -41,6 +42,7 @@ requestRouter.post("/send/:status/:toUserId", async (req, res) => {
       status,
     });
     const data = await connectionRequest.save();
+    await sendEmail();
     return res.status(201).json({
       success: true,
       data,
@@ -57,12 +59,12 @@ requestRouter.post("/review/:status/:requestId", async (req, res) => {
   try {
     const loggedInUser = req.user;
     const { status, requestId } = req.params;
-    const allowedStatus=['accepted','rejected']
-    if(!allowedStatus.includes(status)){
+    const allowedStatus = ["accepted", "rejected"];
+    if (!allowedStatus.includes(status)) {
       return res.status(400).json({
-        success:false,
-        message:'Invalid status provided'
-      })
+        success: false,
+        message: "Invalid status provided",
+      });
     }
     const connectionRequest = await ConnectionRequestModel.findOne({
       toUserId: loggedInUser._id,
@@ -75,8 +77,8 @@ requestRouter.post("/review/:status/:requestId", async (req, res) => {
         message: "Connection request not found.",
       });
     }
-    connectionRequest.status=status;
-    connectionRequest.save()
+    connectionRequest.status = status;
+    connectionRequest.save();
     return res.status(201).json({
       success: true,
       status,
