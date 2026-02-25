@@ -9,6 +9,8 @@ const requestRouter=require('./routes/request')
 const {userAuth}=require('./middleware/auth')
 const userRouter=require('./routes/user')
 const cors=require('cors')
+require('./utils/cronJob')
+
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({

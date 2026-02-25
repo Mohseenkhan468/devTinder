@@ -31,6 +31,7 @@ const createSendEmailCommand = (toAddress, fromAddress) => {
 };
 
 const sendEmail = async () => {
+  console.log('sendEmail called')
   const sendEmailCommand = createSendEmailCommand(
     "mohseenkhan468@gmail.com",
     "mohsinkhanmewati468@gmail.com",
