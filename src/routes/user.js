@@ -27,9 +27,7 @@ userRouter.get("/connections", async (req, res) => {
     const data = await ConnectionRequestModel.find({
       $or: [{ fromUserId: user._id }, { toUserId: user._id }],
       status: "accepted",
-    }).populate(
-      ["fromUserId", "toUserId"],
-    );
+    }).populate(["fromUserId", "toUserId"]);
     const result = data.map((item) => {
       const isSender = item.fromUserId._id.equals(user._id);
       return {
@@ -112,6 +110,21 @@ userRouter.get("/feed", async (req, res) => {
     return res.json({
       success: true,
       data: users,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+  }
+});
+
+userRouter.get("/premium/verify", async (req, res) => {
+  try {
+    const user = req.user;
+    return res.json({
+      success: true,
+      isPremium: user.isPremium,
     });
   } catch (err) {
     return res.status(500).json({
