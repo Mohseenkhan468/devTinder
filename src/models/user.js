@@ -35,6 +35,13 @@ const UserSchema = new mongoose.Schema(
       type: String,
       enum: ["male", "female", "other"],
     },
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    memberShipType: {
+      type: String,
+    },
     age: {
       type: Number,
       min: 18,

@@ -3,26 +3,30 @@ const express = require("express");
 const connectDB = require("./config/database");
 const app = express();
 const cookieParser = require("cookie-parser");
-const authRouter=require('./routes/auth');
+const authRouter = require("./routes/auth");
 const profileRouter = require("./routes/profile");
-const requestRouter=require('./routes/request')
-const {userAuth}=require('./middleware/auth')
-const userRouter=require('./routes/user')
-const cors=require('cors')
-require('./utils/cronJob')
+const requestRouter = require("./routes/request");
+const { userAuth } = require("./middleware/auth");
+const userRouter = require("./routes/user");
+const paymentRouter = require("./routes/payment");
+const cors = require("cors");
+require("./utils/cronJob");
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({
-  origin: "http://localhost:5173",
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  }),
+);
 
-app.use('/auth',authRouter)
-app.use('/profile',userAuth,profileRouter)
-app.use('/request',userAuth,requestRouter)
-app.use('/user',userAuth,userRouter)
-const PORT=process.env.PORT || 5000;
+app.use("/auth", authRouter);
+app.use("/profile", userAuth, profileRouter);
+app.use("/request", userAuth, requestRouter);
+app.use("/user", userAuth, userRouter);
+app.use("/payment", paymentRouter);
+const PORT = process.env.PORT || 5000;
 connectDB()
   .then(() => {
     console.log("Database connected successfully.");
