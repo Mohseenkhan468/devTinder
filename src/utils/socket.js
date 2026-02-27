@@ -1,6 +1,7 @@
 const socket = require("socket.io");
 const crypto = require("crypto");
 const ChatModel = require("../models/chat");
+const ConnectionRequestModel = require("../models/connectionRequest");
 
 const getSecretRoomId = ({ userId, targetUserId }) => {
   return crypto
@@ -23,6 +24,16 @@ const initializeSocket = (server) => {
     socket.on(
       "sendMessage",
       async ({ firstName, lastName, userId, targetUserId, text }) => {
+        const connection = await ConnectionRequestModel.findOne({
+          $or: [
+            { fromUserId: userId, toUserId: targetUserId },
+            { fromUserId: targetUserId, toUserId: userId },
+          ],
+          status: "accepted",
+        });
+        if (!connection) {
+          return;
+        }
         const roomId = getSecretRoomId({ userId, targetUserId });
         try {
           let chat = await ChatModel.findOne({
