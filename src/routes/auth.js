@@ -19,7 +19,7 @@ authRouter.post("/signup", async (req, res) => {
       success: true,
       message: "User created successfully.",
     });
-  } catch (error) {
+  } catch (err) {
     res.status(500).json({
       success: false,
       message: err.message,
