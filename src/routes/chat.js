@@ -9,7 +9,7 @@ chatRouter.get("/:targetUserId", async (req, res) => {
     const userId = req.user._id;
     let chat = await ChatModel.findOne({
       participants: { $all: [userId, targetUserId] },
-    }).populate("messages.senderId", "firstName lastName createdAt");
+    }).populate("messages.senderId", "firstName lastName");
     if (!chat) {
       chat = new Chat({
         participants: [userId, targetUserId],
